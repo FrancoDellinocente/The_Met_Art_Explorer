@@ -3,19 +3,16 @@
 :root {
   --negro: #000;
   --blanco:#FFF;
-  --color-logo:#F4D6A2;
-  
-  --color-tituloClaro: #7A736B;
-  --color-cuerpoClaro: #7C7673;
-  --color-fondoClaro: #F5F4EC;
 
-  --color-tituloOscuro: #BCBCBC;
-  --color-cuerpoOscuro: #AAAAAA;
-  --color-fondoOscuro: #333333;
+  --color-textoRojo:#AE2F2E;
+
+  --color-fondoRojo: #E4002B;
+  --color-fondoClaro: #f1faee;
+  --color-fondoTarjeta: #F2F2F2;
+
   /* Tipografía */
-  --tipo-titulos: 'Italianno', cursive;;
-  --tipo-subtitulos: 'Roboto', sans-serif;
-  --tipo-cuerpo: 'Crimson Text', serif;;
+  --tipo-principal:'Montserrat', sans-serif;
+
 }
 
 /* Las adaptamos al modo oscuro */
@@ -142,9 +139,9 @@ svg {
 body {
   min-height: 100vh;
   font-size: 100%;
-  font-family: var(--tipo-subtitulos);
-  background-color: var(--color-fondoOscuro);
-  color: var(--color-tituloOscuro);
+  font-family: var(--tipo-principal);
+  background-color: var(--blanco);
+  color: var(--negro);
   /* opcional */
   line-height: 1.4em;
   /* opcional */
