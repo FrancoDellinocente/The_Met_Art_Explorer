@@ -13,7 +13,7 @@
 <style>
   .home{
     position: relative;
-    top: 4.5em;
+    
     padding: 0 10%;
     background: linear-gradient(rgba(5, 7, 12, 0.75),rgba(5, 7, 12, 0.75)), url(https://cdn.sanity.io/images/cctd4ker/production/73a42b4ea1644b2085acaad2896bfa4699687664-2320x920.jpg?rect=405,0,1490,920&w=1080&q=75&fit=clip&auto=format) no-repeat center center fixed;
     background-size: cover;
@@ -31,7 +31,7 @@
   }
 
   .home__title{
-    margin-top: 5em;
+    margin-top: 9em;
     font-size: 3em;
     font-weight: bold;
   }
@@ -51,8 +51,7 @@
   }
 
   .home__button:hover{
-    background-color: #B30011
-;
+    background-color: var(--color-fondoRojoHover);
     border: .1em solid var(--blanco);
   }
 
