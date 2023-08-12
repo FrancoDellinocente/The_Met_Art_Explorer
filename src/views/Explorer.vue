@@ -1,23 +1,21 @@
 <template>
   <div class="explorer">
-    <p v-if="vacio">Cargando...</p>
-    <p v-else>{{ allIds?.total }}</p>
-    <!-- <p>{{ currentPage }}</p>
-    <p>{{ totalPages }}</p> -->
+    <h1 v-if="vacio">Cargando...</h1>
+    <h1 v-else class="explorer__total">{{ allIds?.total }} results</h1>
     <div class="explorer__gallery">
       <ul v-if="!vacio" class="explorer__wrapexp">
         <li v-for="item in items" :key="item.id" class="wrapexp__item">
-          <CardItem :obra="item"/>
+          <CardItem :obra="item" />
         </li>
       </ul>
-      <div v-if="!vacio" class="explorer__pagination">
-        <div>
-          <p>{{ currentPage }}</p>
-          <p>{{ totalPages }}</p>
-        </div>
-        <button @click="prevPage" :disabled="currentPage === 1">Anterior</button>
-        <button @click="nextPage" :disabled="currentPage === totalPages">Siguiente</button>
+    </div>
+    <div v-if="!vacio" class="explorer__pagination">
+      <button @click="prevPage" :disabled="currentPage === 1" class="pagination__button">Anterior</button>
+      <div class="pagination__texts">
+        <p class="pagination__text">{{ currentPage }} / </p>
+        <p class="pagination__text">{{ totalPages }}</p>
       </div>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="pagination__button">Siguiente</button>
     </div>
   </div>
 </template>
@@ -32,7 +30,6 @@ let vacio = ref(true);
 const itemsPerPage = 20;
 const currentPage = ref(1);
 
-
 onMounted(() => {
   getObras();
   console.log(vacio)
@@ -44,7 +41,7 @@ let items = ref<any>([]);
 
 async function getObras() {
   try {
-    const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/objects');
+    const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""');
     const data = await response.json();
     allIds = data;
     vacio.value = false;
@@ -61,7 +58,9 @@ function paginateIds() {
 
 
 async function fetchItems() {
-  items.value = await Promise.all(currentIds.value.map(id => fetchItemById(id)));
+  // items.value = await Promise.all(currentIds.value.map(id => fetchItemById(id)));
+  const fetchedItems = await Promise.all(currentIds.value.map(id => fetchItemById(id)));
+  items.value = fetchedItems.filter(item => item && item.objectID && item.isHighlight !== undefined);
   console.log(items.value)
 }
 
@@ -93,6 +92,7 @@ async function fetchItemById(id:any) {
 function prevPage() {
   if (currentPage.value > 1) {
     currentPage.value--;
+    scrollToTop();
   }
 }
 
@@ -100,7 +100,12 @@ function prevPage() {
 function nextPage() {
   if (currentPage.value < totalPages) {
     currentPage.value++;
+    scrollToTop();
   }
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 
@@ -119,6 +124,12 @@ function nextPage() {
     line-height: 2.7em;
     text-align: center;
 
+  }
+
+  .explorer__total{
+    text-align: start;
+    border-bottom: grey solid 0.1em;
+    margin-bottom: 1em;
   }
 
   .explorer__gallery{
@@ -145,8 +156,23 @@ function nextPage() {
     flex: 1;
     min-width: 20em;
     max-width: 20em;
-    min-height:10em; 
+    height: 22em; 
   }
 
+  .explorer__pagination{
+    width: 100%;
+    margin: 1em 0;
+    border-top: grey solid 0.1em;
+
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pagination__texts{
+    display: flex;
+    flex-flow: row;
+  }
 
 </style>

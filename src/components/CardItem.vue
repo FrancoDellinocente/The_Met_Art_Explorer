@@ -3,10 +3,8 @@
       <div class="carditem_imgcontainer">
           <img :class="[determineImageOrientationClass(), 'carditem__img']" :src="getImageSource()" alt="">
       </div>
-      <h2 class="carditem__title">{{ truncateText(props.obra?.title) }}</h2>
-      <!-- <h1 class="carditem__title">{{ props.obra?.title }}</h1> -->
+      <h1 class="carditem__title">{{ truncateText(props.obra?.title) }}</h1>
       <h2 class="carditem__subtitle">{{ props.obra?.artistDisplayName }}</h2>
-      <h3 class="carditem__period">{{ props.obra?.period }}</h3>
   </div>
 </template>
 
@@ -27,7 +25,7 @@ const determineImageOrientationClass = () => {
   const image = new Image();
   image.src = imageUrl;
   const aspectRatio = image.width / image.height;
-  console.log(aspectRatio)
+  
   return aspectRatio > 1 ? 'horizontal-image' : 'vertical-image';
 };
 
@@ -43,15 +41,18 @@ const truncateText = (text: string) => {
     return text.substring(0, maxLength - 3) + '...';
   }
 };
+
 </script>
 
 <style scoped>
 
 .carditem{
   background-color: var(--color-fondoTarjeta);
+  height: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content:center ;
+  justify-content:start ;
   align-items:baseline;
 
   text-align:left ;
@@ -60,7 +61,7 @@ const truncateText = (text: string) => {
   width: 20em;
   height: 16em;
   overflow: hidden;
-  margin-bottom: .5em;
+  margin-bottom: 1em;
 
   display: flex;
   justify-content: center;
@@ -84,6 +85,7 @@ const truncateText = (text: string) => {
   font-size: 1em;
   line-height: 1em;
   margin-bottom: .5em;
+  padding: 0 .5em;
 }
 
 .carditem__subtitle{
@@ -91,11 +93,7 @@ const truncateText = (text: string) => {
   font-size: .9em;
   line-height: .9em;
   margin-bottom: .5em;
+  padding: 0 .5em;
 }
 
-.carditem__period{
-  align-self: start;
-  font-weight:lighter;
-  font-size: .5em;
-}
 </style>
