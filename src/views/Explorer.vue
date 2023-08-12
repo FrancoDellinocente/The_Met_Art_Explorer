@@ -130,17 +130,23 @@ function nextPage() {
   }
 
   .explorer__wrapexp{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
     display: flex;
     flex-flow: wrap;
-    align-items: center;
-    justify-content: space-around;
-    gap: 1em;
+
+    justify-content: center;
+    gap: 2em;
   }
 
   .wrapexp__item{
-    width: 6em;
-    height: auto;
-    max-height: 10em;
-    overflow: hidden;
+    flex: 1;
+    min-width: 20em;
+    max-width: 20em;
+    min-height:10em; 
   }
+
+
 </style>
