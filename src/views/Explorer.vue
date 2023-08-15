@@ -1,15 +1,15 @@
 <template>
   <div class="explorer">
-    <h1 v-if="vacio">Cargando...</h1>
+    <h1 v-if="isLoading">Cargando...</h1>
     <h1 v-else class="explorer__total">{{ allIds?.total }} results</h1>
     <div class="explorer__gallery">
-      <ul v-if="!vacio" class="explorer__wrapexp">
-        <li v-for="item in items" :key="item.id" class="wrapexp__item">
+      <ul v-if="!isLoading " class="explorer__wrapexp">
+        <li v-for="item in items" :key="item.objectID" class="wrapexp__item">
           <CardItem :obra="item" />
         </li>
       </ul>
     </div>
-    <div v-if="!vacio" class="explorer__pagination">
+    <div v-if="!isLoading " class="explorer__pagination">
       <button @click="prevPage" :disabled="currentPage === 1" class="pagination__button">Anterior</button>
       <div class="pagination__texts">
         <p class="pagination__text">{{ currentPage }} / </p>
@@ -22,29 +22,30 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { iAllIDs} from '../interfaces/interfaces';
+import { iAllIDs, iItem} from '../interfaces/interfaces';
 import CardItem from '../components/CardItem.vue';
 
-let allIds = ref<iAllIDs>();  
-let vacio = ref(true);
+let allIds = ref<iAllIDs>({ total: 0, objectIDs: [0] });  
+let isLoading  = ref<boolean>(true);
 const itemsPerPage = 20;
 const currentPage = ref(1);
+let totalPages:any;
+let currentIds = ref<number[]>([]);
+let items = ref<iItem[]>([]);
 
 onMounted(() => {
   getObras();
-  console.log(vacio)
 });
-
-let totalPages:any;
-let currentIds = ref([]);
-let items = ref<any>([]);
 
 async function getObras() {
   try {
     const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""');
     const data = await response.json();
-    allIds = data;
-    vacio.value = false;
+    allIds.value = data; //fetch de todos los items
+    totalPages = Math.ceil(allIds.value.objectIDs.length / itemsPerPage); //cargamos total de paginas
+    currentIds.value=paginateIds(); //seraramos por 20 ids y traemos los 20 segun la currentPage
+    fetchItems(); //traemos los datos de cada item
+    isLoading.value = false;
   } catch (error) {
     console.error('Fetch error:', error);
   }
@@ -53,41 +54,29 @@ async function getObras() {
 function paginateIds() {
   const startIndex = (currentPage.value - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  return allIds.objectIDs.slice(startIndex, endIndex);
+  return allIds.value.objectIDs.slice(startIndex, endIndex);
 }
 
 
 async function fetchItems() {
-  // items.value = await Promise.all(currentIds.value.map(id => fetchItemById(id)));
-  const fetchedItems = await Promise.all(currentIds.value.map(id => fetchItemById(id)));
-  items.value = fetchedItems.filter(item => item && item.objectID && item.isHighlight !== undefined);
-  console.log(items.value)
+  //console.log(currentIds.value)
+  const fetchedItems = await Promise.all(currentIds.value?.map(id => fetchItemById(id)));
+  items.value = fetchedItems.filter(item => item && item.objectID && item.isHighlight !== undefined); //filtramos porque hay algunos ids sin datos en la API
+  //console.log(items.value)
 }
 
-
-watch(currentPage, () => {
-  console.log("eeeeee" )
-  currentIds.value = paginateIds();
-  fetchItems();
-});
-
-watch(vacio, () => {
-  console.log("ddddddddd" )
-  console.log(allIds.objectIDs.length)
-  totalPages = Math.ceil(allIds.objectIDs.length / itemsPerPage); 
-  console.log(totalPages )
-  currentIds.value=paginateIds();
-  fetchItems(); 
-});
-
-
 async function fetchItemById(id:any) {
-  const response = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
+ const response = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
   const data = await response.json();
   return data;
 }
 
-
+//actualiza los datos cuando cambia de pag
+watch(currentPage, () => {
+  currentIds.value = paginateIds();
+  fetchItems();
+});
+ 
 // Función para ir a la página anterior
 function prevPage() {
   if (currentPage.value > 1) {

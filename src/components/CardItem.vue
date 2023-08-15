@@ -1,10 +1,12 @@
 <template>
   <div class="carditem">
+    <a href="#">
       <div class="carditem_imgcontainer">
           <img :class="[determineImageOrientationClass(), 'carditem__img']" :src="getImageSource()" alt="">
       </div>
       <h1 class="carditem__title">{{ truncateText(props.obra?.title) }}</h1>
       <h2 class="carditem__subtitle">{{ props.obra?.artistDisplayName }}</h2>
+    </a>
   </div>
 </template>
 
