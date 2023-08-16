@@ -12,6 +12,12 @@ const router = createRouter({
       path: '/Explorer',
       name: 'explorer',
       component: () => import('../views/Explorer.vue')
+    },
+    {
+      path: '/Detail/:id',
+      name: 'detail',
+      component: () => import('../views/Detail.vue'),
+      props: true
     }
   ]
 })

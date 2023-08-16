@@ -32,6 +32,7 @@ const currentPage = ref(1);
 let totalPages:any;
 let currentIds = ref<number[]>([]);
 let items = ref<iItem[]>([]);
+let dataCache = ref<{ [id: number]: any }>({});
 
 onMounted(() => {
   getObras();
@@ -66,9 +67,15 @@ async function fetchItems() {
 }
 
 async function fetchItemById(id:any) {
- const response = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
+  if (dataCache.value[id]) {
+    // Si los detalles ya están en la caché, devuelve los datos de la caché
+    return dataCache.value[id];
+  } else {
+  const response = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`);
   const data = await response.json();
+  dataCache.value[id] = data;
   return data;
+}
 }
 
 //actualiza los datos cuando cambia de pag
