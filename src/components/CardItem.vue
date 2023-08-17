@@ -1,6 +1,6 @@
 <template>
   <div class="carditem">
-    <router-link :to="'/Detail/'+ props.obra?.objectID" >
+    <router-link :to="'/Detail/'+ props.obra?.objectID" @click="scrollToTop" >
       <div class="carditem_imgcontainer">
           <img :class="[determineImageOrientationClass(), 'carditem__img']" :src="getImageSource()" alt="">
       </div>
@@ -23,7 +23,7 @@ const props = defineProps({
 });
 
 const determineImageOrientationClass = () => {
-  const imageUrl = props.obra.isPublicDomain ? props.obra.primaryImage : copyright;
+  const imageUrl = props.obra.isPublicDomain ? props.obra.primaryImageSmall : copyright;
   const image = new Image();
   image.src = imageUrl;
   const aspectRatio = image.width / image.height;
@@ -32,7 +32,7 @@ const determineImageOrientationClass = () => {
 };
 
 const getImageSource = () => {
-  return props.obra.isPublicDomain ? props.obra.primaryImage : copyright;
+  return props.obra.isPublicDomain ? props.obra.primaryImageSmall : copyright;
 };
 
 const truncateText = (text: string) => {
@@ -44,6 +44,9 @@ const truncateText = (text: string) => {
   }
 };
 
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 
 <style scoped>
