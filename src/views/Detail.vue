@@ -3,32 +3,64 @@
     <div class="detail">
         <section class="detail__head">
             <div class="detail__imgcontainer">
-                <img :class="[determineImageOrientationClass(), 'detail__img']" :src="getImageSource()" alt="">
+                <img :class="['detail__img']" :src="getImageSource()" alt="">
             </div>
             <div class="detail__maininf">
                 <h1 class="maininf__title">{{item?.title}}</h1>
-                <h2 class="maininf__artist">{{item?.artistDisplayName}}</h2>
+                <h2 class="maininf__artist"><a href="">{{item?.artistDisplayName}}</a></h2>
                 <h3 class="maininf__date">{{item?.objectDate}}</h3>
             </div>
         </section>
         <section class="detail__info">
           <div class="info__section">
-            <h1 class="info__title">Descripcion</h1>
-            <p class="info__row">
+            <h1 class="info__title">Descripcion:</h1>
+            <p class="info__row" v-if="item?.title.length!==0">
+              <span class="info__category">Title:</span>
+              <span class="info__text">{{item?.title}}</span>
+            </p>
+            <p class="info__row" v-if="item?.objectDate.length!==0">
+              <span class="info__category">Date:</span>
+              <span class="info__text">{{item?.objectDate}}</span>
+            </p>
+            <p class="info__row" v-if="item?.classification.length!==0">
               <span class="info__category">Classification:</span>
               <span class="info__text">{{item?.classification}}</span>
             </p>
-            <p class="info__row">
+            <p class="info__row" v-if="item?.department.length!==0">
               <span class="info__category">Department:</span>
               <span class="info__text">{{item?.department}}</span>
             </p>
-            <p class="info__row">
+            <p class="info__row" v-if="item?.medium.length!==0">
               <span class="info__category">Medium:</span>
               <span class="info__text">{{item?.medium}}</span>
             </p>
+            <p class="info__row" v-if="item?.dimensions.length!==0">
+              <span class="info__category">Dimensions:</span>
+              <span class="info__text">{{item?.dimensions}}</span>
+            </p>
+            <p class="info__row" v-if="item?.classification.length!==0">
+              <span class="info__category">Classification:</span>
+              <span class="info__text">{{item?.classification}}</span>
+            </p>
+            <p class="info__row" v-if="item?.repository.length!==0">
+              <span class="info__category">Repository:</span>
+              <span class="info__text">{{item?.repository}}</span>
+            </p>
           </div>
-          <div class="info__section">
-
+          <div class="info__section info__section--last">
+            <h1 class="info__title">Artist:</h1>
+            <p class="info__row" v-if="item?.artistDisplayName.length!==0">
+              <span class="info__category">Name:</span>
+              <span class="info__text">{{item?.artistDisplayName}}</span>
+            </p>
+            <p class="info__row" v-if="item?.artistNationality.length!==0">
+              <span class="info__category">Nationality:</span>
+              <span class="info__text">{{item?.artistNationality}}</span>
+            </p>
+            <p class="info__row" v-if="item?.artistBeginDate.length!==0">
+              <span class="info__category">Birth and Death::</span>
+              <span class="info__text">{{item?.artistBeginDate}} - {{item?.artistEndDate}}</span>
+            </p>
           </div>
         </section>
     </div>
@@ -56,15 +88,6 @@ async function fetchItemById(id: any): Promise<iItem> {
     return data;
 }
 
-const determineImageOrientationClass = () => {
-    console.log(item)
-  const imageUrl = item.value?.isPublicDomain ? item.value?.primaryImage : copyright;
-  const image = new Image();
-  image.src = imageUrl;
-  const aspectRatio = image.width / image.height;
-  
-  return aspectRatio > 1 ? 'horizontal-image' : 'vertical-image';
-};
 
 const getImageSource = () => {
   return item.value?.isPublicDomain ? item.value?.primaryImage : copyright;
@@ -94,7 +117,6 @@ const getImageSource = () => {
 
     display: grid;
     grid-template-columns: 1fr 1fr;
-  
   }
 
   .detail__imgcontainer{
@@ -107,15 +129,8 @@ const getImageSource = () => {
     justify-content: center;
   }
 
-  .horizontal-image {
-    width: 100%;
-    height: auto;
+  .detail__img{
     object-fit: contain;
-  }
-
-  .vertical-image {
-    width: auto;
-    height: 100%;
     display: flex;
     justify-self: center;
   }
@@ -152,12 +167,18 @@ const getImageSource = () => {
   }
 
   .detail__info{
-    margin: 1em 0;
+    margin-bottom: .5rem;
   }
 
   .info__section{
     width: 80%;
     margin: auto;
+    padding: 1rem 0; 
+    border-bottom: solid 0.1rem var(--negro);
+  }
+
+  .info__section--last{
+    border-bottom: none;
   }
 
   .info__title{
@@ -170,7 +191,7 @@ const getImageSource = () => {
 
   .info__row{
     font-size: 1rem;
-    line-height: 1em;
+    line-height: 1.2;
     margin-bottom: .3rem;
   }
 
@@ -181,4 +202,11 @@ const getImageSource = () => {
   .info__text{
     font-weight: 600;
   }
+
+  @media (max-width: 768px) {
+    .detail__head{
+    grid-template-columns:1fr;
+    grid-template-rows: 1fr auto;
+    }
+  } 
 </style>
