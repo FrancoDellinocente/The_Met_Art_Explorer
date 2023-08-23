@@ -7,7 +7,7 @@
             </div>
             <div class="detail__maininf">
                 <h1 class="maininf__title">{{item?.title}}</h1>
-                <h2 class="maininf__artist"><a href="">{{item?.artistDisplayName}}</a></h2>
+                <h2 class="maininf__artist"><a :href="getExplorerLink()">{{item?.artistDisplayName}}</a></h2>
                 <h3 class="maininf__date">{{item?.objectDate}}</h3>
             </div>
         </section>
@@ -92,6 +92,14 @@ async function fetchItemById(id: any): Promise<iItem> {
 const getImageSource = () => {
   return item.value?.isPublicDomain ? item.value?.primaryImage : copyright;
 };
+
+const getExplorerLink = () => {
+    if (item && item.value?.artistDisplayName) {
+      return `/Explorer/${encodeURIComponent(item.value?.artistDisplayName)}`;
+    } else {
+      return '/Explorer';
+    }
+}
 
 </script>
 

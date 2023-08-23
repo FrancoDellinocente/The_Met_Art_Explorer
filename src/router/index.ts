@@ -9,9 +9,10 @@ const router = createRouter({
       component: () => import('../views/Home.vue')
     },
     {
-      path: '/Explorer',
+      path: '/Explorer/:artist?',
       name: 'explorer',
-      component: () => import('../views/Explorer.vue')
+      component: () => import('../views/Explorer.vue'),
+      props: true
     },
     {
       path: '/Detail/:id',

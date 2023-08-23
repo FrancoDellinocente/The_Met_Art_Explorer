@@ -24,6 +24,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { iAllIDs, iItem} from '../interfaces/interfaces';
 import CardItem from '../components/CardItem.vue';
+import { useRoute } from 'vue-router'
 
 let allIds = ref<iAllIDs>({ total: 0, objectIDs: [0] });  
 let isLoading  = ref<boolean>(true);
@@ -33,6 +34,8 @@ let totalPages:any;
 let currentIds = ref<number[]>([]);
 let items = ref<iItem[]>([]);
 let dataCache = ref<{ [id: number]: any }>({});
+const route = useRoute();
+let artistParam = route.params.artist;
 
 onMounted(() => {
   getObras();
@@ -40,7 +43,14 @@ onMounted(() => {
 
 async function getObras() {
   try {
-    const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""');
+    let apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""';
+
+    // Si se proporciona el parámetro artista, ajustar la URL de la API
+    if (artistParam) {
+      apiUrl = `https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=${artistParam}`;
+    }
+
+    const response = await fetch(apiUrl);
     const data = await response.json();
     allIds.value = data; //fetch de todos los items
     totalPages = Math.ceil(allIds.value.objectIDs.length / itemsPerPage); //cargamos total de paginas
