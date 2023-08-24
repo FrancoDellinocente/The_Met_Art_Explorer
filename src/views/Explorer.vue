@@ -1,7 +1,17 @@
 <template>
   <div class="explorer">
     <h1 v-if="isLoading">Cargando...</h1>
-    <h1 v-else class="explorer__total">{{ allIds?.total }} results</h1>
+    <div v-else class="explorer__filters">
+      <div class="explorer__search"> 
+        <input type="text" class="search__input" name="search" id="search" placeholder="Search" v-model="searchTerm">
+        <button type="submit" on class="search__button"  @click="search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <h1 v-if="!isLoading" class="explorer__total">{{ allIds?.total }} results</h1> 
     <div class="explorer__gallery">
       <ul v-if="!isLoading " class="explorer__wrapexp">
         <li v-for="item in items" :key="item.objectID" class="wrapexp__item">
@@ -36,18 +46,24 @@ let items = ref<iItem[]>([]);
 let dataCache = ref<{ [id: number]: any }>({});
 const route = useRoute();
 let artistParam = route.params.artist;
+//filter
+let searchTerm = ref('');
 
 onMounted(() => {
-  getObras();
+  getObras(searchTerm.value);
 });
 
-async function getObras() {
+async function getObras(searchTerm: string) {
   try {
     let apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""';
 
     // Si se proporciona el parámetro artista, ajustar la URL de la API
     if (artistParam) {
       apiUrl = `https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=${artistParam}`;
+    }
+
+    if(searchTerm){
+      apiUrl = `https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=${encodeURIComponent(searchTerm)}`;
     }
 
     const response = await fetch(apiUrl);
@@ -86,6 +102,12 @@ async function fetchItemById(id:any) {
   dataCache.value[id] = data;
   return data;
 }
+}
+
+function search() {
+  if (searchTerm.value.trim() !== '') {
+    getObras(searchTerm.value); // Llama a getObras con el término de búsqueda
+  }
 }
 
 //actualiza los datos cuando cambia de pag
@@ -130,6 +152,36 @@ function scrollToTop() {
     line-height: 2.7em;
     text-align: center;
 
+  }
+
+  .explorer__search{
+    margin: 1em 0;
+
+    display: flex;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: center; 
+    gap: .5rem;
+  }
+
+  .search__input{
+    border: grey solid 0.1em;
+    border-radius: .2rem;
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .search__button{
+    border: var(--color-fondoRojo) solid 0.1em;
+    border-radius: .2rem;
+    background-color: var(--color-fondoRojo);
+    padding: 1rem;
+    margin-left: 1rem;
+    height: auto;
+  }
+
+  .bi{
+    fill: var(--blanco);
   }
 
   .explorer__total{
