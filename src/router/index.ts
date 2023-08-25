@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/Home.vue')
     },
     {
-      path: '/The_Met_Art_Explorer/Explorer/:artist?',
+      path: '/Explorer/:artist?',
       name: 'explorer',
       component: () => import('../views/Explorer.vue'),
       props: true
