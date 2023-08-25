@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory('/The_Met_Art_Explorer/'),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../views/Home.vue')
     },
     {
-      path: '/Explorer/:artist?',
+      path: '/The_Met_Art_Explorer/Explorer/:artist?',
       name: 'explorer',
       component: () => import('../views/Explorer.vue'),
       props: true
