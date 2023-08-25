@@ -14,7 +14,7 @@
   .home{
     position: relative;
     
-    padding: 0 10%;
+    padding: 10% 10%;
     background: linear-gradient(rgba(5, 7, 12, 0.75),rgba(5, 7, 12, 0.75)), url(https://cdn.sanity.io/images/cctd4ker/production/73a42b4ea1644b2085acaad2896bfa4699687664-2320x920.jpg?rect=405,0,1490,920&w=1080&q=75&fit=clip&auto=format) no-repeat center center fixed;
     background-size: cover;
     height: 100dvh;
@@ -45,7 +45,7 @@
     padding: 1em 2em;
     background-color: var(--color-fondoRojo);
     border: .1em solid var(--color-fondoRojo);
-    border-radius: 40px;
+    border-radius: .5rem;
     font-size: 1em;
     font-weight: bold;
   }
@@ -55,4 +55,15 @@
     border: .1em solid var(--blanco);
   }
 
+  @media (max-height: 618px) {
+    .home__title{
+      margin-top: 3em;
+    }
+  } 
+
+  @media (max-height: 824px) {
+    .home__title{
+      margin-top: 4em;
+    }
+  } 
 </style>

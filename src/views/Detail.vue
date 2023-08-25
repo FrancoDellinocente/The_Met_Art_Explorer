@@ -1,6 +1,7 @@
 
 <template>
     <div class="detail">
+        <button class="detail__back" @click="goBack">Back</button>
         <section class="detail__head">
             <div class="detail__imgcontainer">
                 <img :class="['detail__img']" :src="getImageSource()" alt="">
@@ -70,7 +71,7 @@
 import { iItem } from '../interfaces/interfaces';
 import copyright from '../assets/imgCopyright.jpg'
 
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed, onMounted, ref } from 'vue';
 
 const route = useRoute();
@@ -88,6 +89,12 @@ async function fetchItemById(id: any): Promise<iItem> {
     return data;
 }
 
+
+const router = useRouter(); 
+
+function goBack() {
+  router.go(-1);
+}
 
 const getImageSource = () => {
   return item.value?.isPublicDomain ? item.value?.primaryImage : copyright;
@@ -119,6 +126,13 @@ const getExplorerLink = () => {
     flex-direction: column;
   }
 
+  .detail__back{
+    padding: 0 10%;
+    align-self: start;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   .detail__head{
     background-color: var(--color-fondoTarjeta);
     padding: 0 10%;
@@ -147,7 +161,7 @@ const getExplorerLink = () => {
     justify-self: start;
     margin: 1em 0 1em 1em;
     line-height: inherit;
-
+    
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -157,6 +171,7 @@ const getExplorerLink = () => {
     font-size: 3em;
     font-weight: bold;
     margin-bottom: .5rem;
+    overflow: hidden;
   }
 
   .maininf__artist{
@@ -215,6 +230,24 @@ const getExplorerLink = () => {
     .detail__head{
     grid-template-columns:1fr;
     grid-template-rows: 1fr auto;
+    }
+  } 
+
+  @media (max-width: 425px) {
+    .detail__back{
+      padding: 0 5%;
+    }
+
+    .detail__head{
+      padding: 0 5%;
+    }
+
+    .detail__imgcontainer{
+      width: 100%;
+    }
+
+    .info__section{
+      width: 90%;
     }
   } 
 </style>

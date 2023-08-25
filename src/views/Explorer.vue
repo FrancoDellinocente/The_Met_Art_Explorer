@@ -20,12 +20,12 @@
       </ul>
     </div>
     <div v-if="!isLoading " class="explorer__pagination">
-      <button @click="prevPage" :disabled="currentPage === 1" class="pagination__button">Anterior</button>
+      <button @click="prevPage" :disabled="currentPage === 1" class="pagination__button">Previous</button>
       <div class="pagination__texts">
         <p class="pagination__text">{{ currentPage }} / </p>
         <p class="pagination__text">{{ totalPages }}</p>
       </div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="pagination__button">Siguiente</button>
+      <button @click="nextPage" :disabled="currentPage === totalPages" class="pagination__button">Next</button>
     </div>
   </div>
 </template>
@@ -57,7 +57,7 @@ async function getObras(searchTerm: string) {
   try {
     let apiUrl = 'https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=""';
 
-    // Si se proporciona el parámetro artista, ajustar la URL de la API
+    // Si se proporciona el parámetro artista
     if (artistParam) {
       apiUrl = `https://collectionapi.metmuseum.org/public/collection/v1/search?isHighlight=true&q=${artistParam}`;
     }
@@ -178,6 +178,11 @@ function scrollToTop() {
     padding: 1rem;
     margin-left: 1rem;
     height: auto;
+  }
+
+  .search__button:hover{
+    background-color: var(--color-fondoRojoHover);
+    border: .1em solid var(--blanco);
   }
 
   .bi{
