@@ -6,7 +6,7 @@
   <div class="home">
     <h1 class="home__title">The Met Explorer</h1>
     <p class="home__subtitle">Find your favorite piece of art from The Met museum</p>
-    <a href="/The_Met_Art_Explorer/Explorer/" class="home__button">List of pieces</a>
+    <a href="/The_Met_Art_Explorer/#/Explorer/" class="home__button">List of pieces</a>
   </div>
 </template>
 

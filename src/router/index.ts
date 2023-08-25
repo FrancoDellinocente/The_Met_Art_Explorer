@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+// eslint-disable-next-line no-unused-vars
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory('/The_Met_Art_Explorer/'),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
