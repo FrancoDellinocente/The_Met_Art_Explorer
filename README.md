@@ -13,15 +13,15 @@ To run this project locally on your machine, follow these steps:
 
 1. Clone the repository:
 
-   git clone [https://github.com/FrancoDellinocente/The_Met_Art_Explorer.git]
+   `git clone https://github.com/FrancoDellinocente/The_Met_Art_Explorer.git`
    
 3. Install dependencies:
 
-   [npm install]
+   `npm install`
    
 5. Start the development server:
    
-   [npm run dev]
+   `npm run dev`
 
 
 ## The technologies used were
