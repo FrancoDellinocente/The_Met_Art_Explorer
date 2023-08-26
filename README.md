@@ -1,4 +1,4 @@
-# Gabrielle-Ricciardi
+# The Met Explorer
 
 [![Imagen](https://i.postimg.cc/MTK8bNwr/themet.png)](https://francodellinocente.github.io/The_Met_Art_Explorer/#/)
 Live server: https://francodellinocente.github.io/The_Met_Art_Explorer/#/
